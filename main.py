@@ -2,46 +2,7 @@ import pygame
 from Cores import cores
 from random import randint
 import Habilidades as hb
-
-def vida_dragao(janela, hp_dragao):
-    pygame.draw.rect(janela, cores('preto'), (795, 95, 460, 50))
-    hp_max = pygame.Rect(800, 100, hp_dragao, 40)
-
-    if hp_dragao >= 340:
-        pygame.draw.rect(janela, cores('verde'), hp_max)
-    elif hp_dragao >= 230:
-        pygame.draw.rect(janela, cores('amarelo'), hp_max)
-    elif hp_dragao >= 120:
-        pygame.draw.rect(janela, cores('laranja'), hp_max)
-    else:
-        pygame.draw.rect(janela, cores('vermelho'), hp_max)
-
-def vida_beatrice(janela, hp_beatrice):
-    pygame.draw.rect(janela, cores('preto'), (925, 690, 160, 25))
-    hp_max = pygame.Rect(930, 695, hp_beatrice, 15)
-
-    if hp_beatrice >= 110:
-        pygame.draw.rect(janela, cores('verde'), hp_max)
-    elif hp_beatrice >= 85:
-        pygame.draw.rect(janela, cores('amarelo'), hp_max)
-    elif hp_beatrice >= 40:
-        pygame.draw.rect(janela, cores('laranja'), hp_max)
-    else:
-        pygame.draw.rect(janela, cores('vermelho'), hp_max)
-
-def vida_vlad(janela, hp_vlad):
-    pygame.draw.rect(janela, cores('preto'), (925, 820, 260, 30))
-    hp_max = pygame.Rect(930, 825, hp_vlad, 20)
-
-    if hp_vlad >= 180:
-        pygame.draw.rect(janela, cores('verde'), hp_max)
-    elif hp_vlad >= 125:
-        pygame.draw.rect(janela, cores('amarelo'), hp_max)
-    elif hp_vlad >= 60:
-        pygame.draw.rect(janela, cores('laranja'), hp_max)
-    else:
-        pygame.draw.rect(janela, cores('vermelho'), hp_max)
-
+import Barra_de_vida as pv
 
 def ataques_dragao(ataque, x_fogo_grande, x_fogo_pequeno, x_corte_dragao,
                    mov_fogo_grande, mov_fogo_pequeno, mov_corte_dragao, efeito_rugido):
@@ -313,15 +274,15 @@ def main():
             janela.blit(token_beatrice, (925, 600))
             janela.blit(token_vlad, (925, 730))
 
-            vida_dragao(janela, hp_dragao)
+            pv.vida_dragao(janela, hp_dragao)
 
             escrever("VLAD", (1025, 750), janela, 'azul')
             escrever(f"({int(hp_vlad)}/250)", (1020, 780), janela, 'branco')
-            vida_vlad(janela, hp_vlad)
+            pv.vida_vlad(janela, hp_vlad)
 
             escrever("BEATRICE", (1025, 620), janela, 'roxo')
             escrever(f"({int(hp_beatrice)}/150)", (1020, 650), janela, 'branco')
-            vida_beatrice(janela, hp_beatrice)
+            pv.vida_beatrice(janela, hp_beatrice)
 
             if nuvem:
                 janela.blit(nuvem_img, (850, 25))
