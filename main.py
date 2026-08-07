@@ -1,8 +1,10 @@
 import pygame
-from Cores import cores
 from random import randint
+
+from Cores import cores
 import Habilidades as hb
 import Barra_de_vida as pv
+import Textos as txt
 
 def ataques_dragao(ataque, x_fogo_grande, x_fogo_pequeno, x_corte_dragao,
                    mov_fogo_grande, mov_fogo_pequeno, mov_corte_dragao, efeito_rugido):
@@ -49,11 +51,6 @@ def ataques_dragao(ataque, x_fogo_grande, x_fogo_pequeno, x_corte_dragao,
 
     return ataque, x_fogo_grande, x_fogo_pequeno, x_corte_dragao, \
            mov_fogo_grande, mov_fogo_pequeno, mov_corte_dragao, completo, efeito_rugido
-
-def escrever(texto, coordenada, janela, cor):
-    msg = pygame.font.Font("fontes/pixelado.ttf", 20).render(texto, True, cores(cor))
-    janela.blit(msg, coordenada)
-
 
 def main():
     pygame.init()
@@ -276,12 +273,12 @@ def main():
 
             pv.vida_dragao(janela, hp_dragao)
 
-            escrever("VLAD", (1025, 750), janela, 'azul')
-            escrever(f"({int(hp_vlad)}/250)", (1020, 780), janela, 'branco')
+            txt.escrever("VLAD", (1025, 750), janela, 'azul')
+            txt.escrever(f"({int(hp_vlad)}/250)", (1020, 780), janela, 'branco')
             pv.vida_vlad(janela, hp_vlad)
 
-            escrever("BEATRICE", (1025, 620), janela, 'roxo')
-            escrever(f"({int(hp_beatrice)}/150)", (1020, 650), janela, 'branco')
+            txt.escrever("BEATRICE", (1025, 620), janela, 'roxo')
+            txt.escrever(f"({int(hp_beatrice)}/150)", (1020, 650), janela, 'branco')
             pv.vida_beatrice(janela, hp_beatrice)
 
             if nuvem:
@@ -301,48 +298,30 @@ def main():
         
         elif turno == "menu":
             janela.blit(menu_img, (0, 0))
-            escrever("Clique ENTER", (520, 700), janela, 'branco')
-            escrever("para começar", (520, 720), janela, 'branco')
+            txt.escrever("Clique ENTER", (520, 700), janela, 'branco')
+            txt.escrever("para começar", (520, 720), janela, 'branco')
 
 
         elif turno == "historia":
             janela.blit(historia_img, (0, 0))
             janela.blit(livro_img, (500, 90))
-            escrever("EM UM LUGAR MUITO DISTANTE, UMA BRUXA AMBICIOSA", (200, 315), janela, 'branco')
-            escrever("ESTAVA A PROCURA DE UM GRIMÓRIO RARO COM MAGIAS", (155, 345), janela, 'branco')
-            escrever("PODEROSAS PERDIDO NO REINO DE SAPOLÂNDIA. UM HABI-", (155, 375), janela, 'branco')
-            escrever("TANTE LOCAL A INFORMOU QUE O GRIMÓRIO FOI TOMADO", (155, 405), janela, 'branco')
-            escrever("POR UM TERRÍVEL DRAGÃO.", (155, 435), janela, 'branco')
-            escrever("EM OUTRO LUGAR, NESTE MESMO REINO, UM CAVALEIRO", (200, 495), janela, 'branco')
-            escrever("ARMADURADO DERROTAVA UM GRUPO DE BANDIDOS E OS", (155, 525), janela, 'branco')
-            escrever("QUESTIONAVA SOBRE O SUMIÇO DE SUA IRMÃ. O GRUPO", (155, 555), janela, 'branco')
-            escrever("AFIRMOU QUE ELA FOI VISTA AO LADO NORTE DO REINO,", (155, 585), janela, 'branco')
-            escrever("REGIÃO HABITADA PELO DRAGÃO.", (155, 615), janela, 'branco')
-            escrever("OS DOIS HERÓIS, BEATRICE E VLAD, SE ENCONTRAM", (200, 665), janela, 'branco')
-            escrever("NO CAMINHO E DESCOBREM QUE COMPARTILHAM  DO MESMO", (155, 695), janela, 'branco')
-            escrever("OBJETIVO: DERROTAR ROGER, O PODEROSO DRAGÃO.", (155, 725), janela, 'branco')
+            txt.historia_inicial(janela)
 
 
         if turno == "inicio":
-            escrever("UM GRANDE DRAGÃO SE APROXIMA!", (60, 630), janela, 'branco')
+            txt.escrever("UM GRANDE DRAGÃO SE APROXIMA!", (60, 630), janela, 'branco')
 
 
         if turno == "vlad_escolha":
-            escrever("O QUE VLAD, O CAVALEIRO, VAI FAZER?", (60, 610), janela, 'branco')
-            escrever("· ATACAR", (60, 685), janela, 'branco')
-            escrever("· INVOCAR ESCUDO", (60, 745), janela, 'branco')
+            txt.texto_vlad_escolha(janela)
 
             if escolha == 0:
                 pygame.draw.rect(janela, cores('azul'), (85, 675, 150, 40), 5)
-                escrever("VLAD ATACA O DRA-", (410, 660), janela, 'branco')
-                escrever("GÃO COM A ESPADA!", (410, 690), janela, 'branco')
-                escrever("CAUSA 25 DE DANO", (410, 750), janela, 'vermelho')
+                txt.texto_vlad_ataque(janela)
 
             if escolha == 1:    
                 pygame.draw.rect(janela, cores('azul'), (85, 735, 310, 40), 5)
-                escrever("VLAD USA O ESCUDO", (410, 660), janela, 'branco')
-                escrever("PELO PRÓXIMO TURNO!", (410, 690), janela, 'branco')
-                escrever("ABSORVE 15 DE DAN0", (410, 750), janela, 'amarelo')
+                txt.texto_vlad_defesa(janela)
 
 
         if turno == "vlad_ataque":
@@ -374,31 +353,22 @@ def main():
 
         if turno == "vlad_mensagem":
             if escolha == 0:
-                escrever("VLAD ATACOU COM SUA ESPADA!", (60, 630), janela, 'branco')
+                txt.escrever("VLAD ATACOU COM SUA ESPADA!", (60, 630), janela, 'branco')
 
             elif escolha == 1:
-                escrever("VLAD INVOCOU O ESCUDO!", (60, 630), janela, 'branco')
+                txt.escrever("VLAD INVOCOU O ESCUDO!", (60, 630), janela, 'branco')
 
 
         if turno == "beatrice_escolha":
-            escrever("O QUE BEATRICE, A BRUXA, VAI FAZER?", (60, 610), janela, 'branco')
-
-            escrever("· MAGIA", (60, 685), janela, 'branco')
-            escrever("· INVOCAR FADA", (60, 745), janela, 'branco')
+            txt.texto_beatrice_escolha(janela)
 
             if escolha == 0:
                 pygame.draw.rect(janela, cores('roxo'), (85, 675, 130, 40), 5)
-                escrever("UM RAIO É INVOCADO", (410, 660), janela, 'branco')
-                escrever("SOBRE O DRAGÃO!", (410, 690), janela, 'branco')
-                escrever("CAUSA 30 DE DANO", (410, 750), janela, 'vermelho')
+                txt.texto_beatrice_ataque(janela)
 
             if escolha == 1:    
                 pygame.draw.rect(janela, cores('roxo'), (85, 735, 270, 40), 5)
-                escrever("UMA FADA MÁGICA OS", (410, 660), janela, 'branco')
-                escrever("FORTALECEM!", (410, 690), janela, 'branco')
-                escrever("CURA 15 DE VIDA DE", (410, 720), janela, 'verde')
-                escrever("CADA UM E ANULA", (410, 750), janela, 'verde')
-                escrever("EFEITOS NEGATIVOS", (410, 780), janela, 'verde')
+                txt.texto_beatrice_defesa(janela)
 
         if turno == "beatrice_ataque":
             tempo, nuvem, completo = hb.beatrice_ataque(tempo)
@@ -430,35 +400,20 @@ def main():
 
         if turno == "beatrice_mensagem":
             if escolha == 0:
-                escrever("BEATRICE USOU MAGIA!", (60, 630), janela, 'branco')
+                txt.escrever("BEATRICE USOU MAGIA!", (60, 630), janela, 'branco')
             elif escolha == 1:
-                escrever("A FADA MÁGICA CUROU O GRUPO!", (60, 630), janela, 'branco')
+                txt.escrever("A FADA MÁGICA CUROU O GRUPO!", (60, 630), janela, 'branco')
 
         if turno == "dragao_mensagem":
-            if ataque == 1 or ataque == 2:
-                escrever("ROGER, O DRAGÃO, SOLTOU UM FOGO PE-", (60, 630), janela, 'branco')
-                escrever("QUENO!", (60, 660), janela, 'branco')
-                escrever(f"(CAUSOU {int(25*fraqueza-redução)} DE DANO NO VLAD)", (60, 720), janela, 'branco')
-
-            elif ataque == 3 or ataque == 4:
-                escrever("ROGER, O DRAGÃO, FEZ CORTE AÉREO!", (60, 630), janela, 'branco')
-                escrever(f"(CAUSOU {int(25*fraqueza-redução)} DE DANO EM AMBOS)", (60, 690), janela, 'branco')
+            if ataque != 5:
+                txt.texto_dragao_ataque(janela, ataque, fraqueza, redução)
 
             elif ataque == 5:
                 if not som_tocou:
                     som_rugido.play()
                     som_tocou = True
 
-                escrever("ROGER, O DRAGÃO, RUGIU!", (60, 630), janela, 'branco')
-                escrever("(VLAD E BEATRICE ESTÃO FRAGILIZADOS", (60, 690), janela, 'branco')
-                escrever(" E RECEBERÃO MAIS DANO!!!!)", (60, 720), janela, 'branco')
-
-            elif ataque == 6:
-                escrever("ROGER, O DRAGÃO, SOLTOU FOGO GRANDE!", (60, 630), janela, 'branco')
-                escrever(f"(CAUSOU {int(35*fraqueza-redução)} DE DANO EM AMBOS)", (60, 690), janela, 'branco')
-
-
-
+                txt.texto_dragao_ataque(janela, ataque, fraqueza, redução)
 
         if turno == "dragao_ataque":
             ataque, x_fogo_grande, x_fogo_pequeno, x_corte_dragao, \
@@ -515,13 +470,13 @@ def main():
             beatrice_morreu = True
 
         if turno == "vlad_morto":
-            escrever("VLAD, O CAVALEIRO, ESTÁ MORTO...", (60, 630), janela, 'branco')
+            txt.escrever("VLAD, O CAVALEIRO, ESTÁ MORTO...", (60, 630), janela, 'branco')
 
         if turno == "beatrice_morta":
-            escrever("BEATRICE, A BRUXA, ESTÁ MORTA...", (60, 630), janela, 'branco')
+            txt.escrever("BEATRICE, A BRUXA, ESTÁ MORTA...", (60, 630), janela, 'branco')
 
         if turno == "herois_mortos":
-            escrever("BEATRICE E VLAD ESTÃO MORTOS...", (60, 630), janela, 'branco')
+            txt.escrever("BEATRICE E VLAD ESTÃO MORTOS...", (60, 630), janela, 'branco')
 
         if hp_dragao <= 0 and turno != "ganhou":
             turno = "dragao_morto"
@@ -530,19 +485,11 @@ def main():
                 roger_morte.play()
                 roger_morreu = True
 
-            escrever("ROGER, O DRAGÃO, MORREU!!!", (60, 630), janela, 'branco')
+            txt.escrever("ROGER, O DRAGÃO, MORREU!!!", (60, 630), janela, 'branco')
         
         if turno == "ganhou":
             janela.blit(ganhou_img,(0,0))
-
-            escrever("AO DERROTAR O DRAGÃO, VLAD AVISTA SUA IRMÃ LOGO À FRENTE", (105, 560), janela, 'branco')
-            escrever("E A ABRAÇA, TRAZENDO-A SÃ E SALVA PARA CASA.", (80, 590), janela, 'branco')
-            escrever("BEATRICE ENCONTROU O GRIMÓRIO NAS CAVERNAS DO DRAGÃO E", (105, 650), janela, 'branco')
-            escrever("COM ELE SE TORNOU UMA BRUXA SÁBIA E PODEROSA, NUNCA", (80, 680), janela, 'branco')
-            escrever("ESQUECENDO DO AMIGO QUE A AJUDOU.", (80, 710), janela, 'branco')
-            escrever("DESDE ENTÃO, ELES SEMPRE VÃO JUNTOS EM SUAS AVENTURAS.", (105, 780), janela, 'branco')
-
-            escrever("ENTER para sair do jogo", (400, 870), janela, 'branco')
+            txt.texto_vitoria(janela)
 
             if musica_parou:
                 pygame.mixer.music.stop()
@@ -552,12 +499,7 @@ def main():
 
         if turno == "perdeu":
             janela.blit(perdeu_img,(0,0))
-
-            escrever("INFELIZMENTE, OS DOIS HERÓIS TIVERAM UM TRISTE FIM...", (105, 560), janela, 'branco')
-            escrever("O DRAGÃO PERMANECE GUARDANDO O GRIMÓRIO MISTERIOSO...", (105, 620), janela, 'branco')
-            escrever("E A IRMÃ DO VLAD CONTINUA DESAPARECIDA...", (105, 680), janela, 'branco')
-
-            escrever("ENTER para tentar novamente", (400, 870), janela, 'branco')
+            txt.texto_derrota(janela)
 
             if musica_parou:
                 pygame.mixer.music.stop()
