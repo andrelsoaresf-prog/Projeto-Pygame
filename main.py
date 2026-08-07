@@ -82,6 +82,10 @@ def main():
     turno_anterior = None
     turno = "menu"
 
+    limiar_vlad = [(180, 'verde'), (125, 'amarelo'), (60, 'laranja')]
+    limiar_beatrice = [(110, 'verde'), (85, 'amarelo'), (40, 'laranja')]
+    limiar_dragao = [(340, 'verde'), (230, 'amarelo'), (120, 'laranja')]
+
 
     clock = pygame.time.Clock()
     jogar = True
@@ -225,15 +229,15 @@ def main():
             janela.blit(token_beatrice, (925, 600))
             janela.blit(token_vlad, (925, 730))
 
-            pv.vida_dragao(janela, hp_dragao)
+            pv.desenhar_barra_de_vida(janela, hp_dragao, (800, 100), (450, 40), limiar_dragao)
 
             txt.escrever("VLAD", (1025, 750), janela, 'azul')
             txt.escrever(f"({int(hp_vlad)}/250)", (1020, 780), janela, 'branco')
-            pv.vida_vlad(janela, hp_vlad)
+            pv.desenhar_barra_de_vida(janela, hp_vlad, (930, 825), (250, 20), limiar_vlad)
 
             txt.escrever("BEATRICE", (1025, 620), janela, 'roxo')
             txt.escrever(f"({int(hp_beatrice)}/150)", (1020, 650), janela, 'branco')
-            pv.vida_beatrice(janela, hp_beatrice)
+            pv.desenhar_barra_de_vida(janela, hp_beatrice, (930, 695), (150, 15), limiar_beatrice)
 
             if nuvem:
                 janela.blit(nuvem_img, (850, 25))
