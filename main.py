@@ -1,6 +1,7 @@
 import pygame
 from Cores import cores
 from random import randint
+import Habilidades as hb
 
 def vida_dragao(janela, hp_dragao):
     pygame.draw.rect(janela, cores('preto'), (795, 95, 460, 50))
@@ -91,38 +92,6 @@ def ataques_dragao(ataque, x_fogo_grande, x_fogo_pequeno, x_corte_dragao,
 def escrever(texto, coordenada, janela, cor):
     msg = pygame.font.Font("fontes/pixelado.ttf", 20).render(texto, True, cores(cor))
     janela.blit(msg, coordenada)
-
-def vlad_ataque(xvlad):
-    if xvlad < 650:
-        xvlad += 15
-    else:
-        xvlad += 2
-
-    if 100 < xvlad <= 700:
-        return xvlad, False
-    else:
-        return 100, True
-
-def vlad_defesa(tempo):
-    tempo += 5
-    if 5 <= tempo <= 100:
-        return tempo
-    else:
-        return 0
-
-def beatrice_ataque(tempo):
-    tempo += 5
-    if 5 <= tempo <= 100:
-        return tempo, True, False
-    else:
-        return 0, False, True
-
-def beatrice_defesa(tempo):
-    tempo += 1
-    if tempo <= 100:
-        return tempo, True, False
-    else:
-        return 0, False, True
 
 
 def main():
@@ -416,7 +385,7 @@ def main():
 
 
         if turno == "vlad_ataque":
-            xvlad, completo = vlad_ataque(xvlad)
+            xvlad, completo = hb.vlad_ataque(xvlad)
 
             if 650 < xvlad < 660 and not som_tocou:
                 som_espada.play()
@@ -427,7 +396,7 @@ def main():
                 turno = "vlad_mensagem"
         
         if turno == "vlad_defesa":
-            tempo = vlad_defesa(tempo)
+            tempo = hb.vlad_defesa(tempo)
 
             if tempo < 100 and not som_tocou:
                 som_escudo.play() 
@@ -471,7 +440,7 @@ def main():
                 escrever("EFEITOS NEGATIVOS", (410, 780), janela, 'verde')
 
         if turno == "beatrice_ataque":
-            tempo, nuvem, completo = beatrice_ataque(tempo)
+            tempo, nuvem, completo = hb.beatrice_ataque(tempo)
 
             if tempo < 100 and not som_tocou:
                 som_raio.play()
@@ -482,7 +451,7 @@ def main():
                 turno = "beatrice_mensagem"
         
         if turno == "beatrice_defesa":             
-            tempo, fada, completo = beatrice_defesa(tempo)
+            tempo, fada, completo = hb.beatrice_defesa(tempo)
 
             if tempo < 100 and not som_tocou:
                 som_fada.play()
