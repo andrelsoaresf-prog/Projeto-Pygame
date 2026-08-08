@@ -12,3 +12,8 @@ def cores(cor):
         'roxo': (171, 102, 234)
     }
     return CORES[cor]
+
+def tocar_uma_vez(som, som_tocou):
+    if not som_tocou:
+        som.play()
+    return True

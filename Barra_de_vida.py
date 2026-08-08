@@ -1,5 +1,5 @@
 import pygame
-from Cores import cores
+from Funcao_auxiliar import cores
 
 def desenhar_barra_de_vida(janela, hp, pos, tamanho, limiares):
     x, y = pos

@@ -1,8 +1,12 @@
 import pygame
-from Cores import cores
+from Funcao_auxiliar import cores
 
-def escrever(texto, coordenada, janela, cor):
-    msg = pygame.font.Font("fontes/pixelado.ttf", 20).render(texto, True, cores(cor))
+pygame.font.init()
+
+FONTE_PADRAO = pygame.font.Font("fontes/pixelado.ttf", 20)
+
+def escrever(texto, coordenada, janela, cor, fonte=FONTE_PADRAO):
+    msg = fonte.render(texto, True, cores(cor))
     janela.blit(msg, coordenada)
 
 def historia_inicial(janela):

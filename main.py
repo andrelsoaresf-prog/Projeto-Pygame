@@ -1,6 +1,6 @@
 import pygame
 
-from Cores import cores
+import Funcao_auxiliar as aux
 import Habilidades as hb
 import Barra_de_vida as pv
 import Textos as txt
@@ -12,19 +12,19 @@ def main():
     janela = pygame.display.set_mode((1300, 900))
     pygame.display.set_caption('2D1D, "2 DOIDOS E 1 DRAGÃO"')
 
-    vlad_img = [
-        pygame.image.load('imagens/vlad.png'),
-        pygame.image.load('imagens/vlad_atacando.png'),
-        pygame.image.load('imagens/vlad_morto.png')
-    ]
-    beatrice_img = [
-        pygame.image.load('imagens/beatrice.png'),
-        pygame.image.load('imagens/beatrice_morta.png')
-    ]
-    dragao_img = [
-        pygame.image.load('imagens/dragao.png'),
-        pygame.image.load('imagens/dragao_morto.png')
-    ]
+    vlad_img = {
+        "normal" : pygame.image.load('imagens/vlad.png'),
+        "atacando": pygame.image.load('imagens/vlad_atacando.png'),
+        "morto": pygame.image.load('imagens/vlad_morto.png')
+    }
+    beatrice_img = {
+        "normal" : pygame.image.load('imagens/beatrice.png'),
+        "morta" : pygame.image.load('imagens/beatrice_morta.png')
+    }
+    dragao_img = {
+        "normal" : pygame.image.load('imagens/dragao.png'),
+        "morto" : pygame.image.load('imagens/dragao_morto.png')
+    }
 
     fogo_grande_img = pygame.image.load('imagens/fogo_grande.png')
     fogo_pequeno_img = pygame.image.load('imagens/fogo_pequeno.png')
@@ -205,26 +205,26 @@ def main():
             janela.blit(fundo_img, (0,0))
 
             if hp_dragao > 0:
-                janela.blit(dragao_img[0], (630, 30))
+                janela.blit(dragao_img["normal"], (630, 30))
             else:
-                janela.blit(dragao_img[1], (630, -60))
+                janela.blit(dragao_img["morto"], (630, -60))
 
             if hp_vlad > 0:
                 if xvlad < 600:
-                    janela.blit(vlad_img[0], (xvlad, 250))
+                    janela.blit(vlad_img["normal"], (xvlad, 250))
                 elif xvlad > 650 and xvlad < 700:
-                    janela.blit(vlad_img[1], (xvlad, 250))
+                    janela.blit(vlad_img["atacando"], (xvlad, 250))
             else:
-                janela.blit(vlad_img[2], (xvlad, 250))
+                janela.blit(vlad_img["morto"], (xvlad, 250))
             
             if hp_beatrice > 0:
-                janela.blit(beatrice_img[0], (0, 290))
+                janela.blit(beatrice_img["normal"], (0, 290))
             else:
-                janela.blit(beatrice_img[1], (0, 290))
+                janela.blit(beatrice_img["morta"], (0, 290))
 
 
             if turno == "vlad_escolha" or turno == "beatrice_escolha":
-                pygame.draw.rect(janela, cores('marrom'), (400, 650, 385, 160))
+                pygame.draw.rect(janela, aux.cores('marrom'), (400, 650, 385, 160))
 
             janela.blit(token_beatrice, (925, 600))
             janela.blit(token_vlad, (925, 730))
@@ -274,20 +274,19 @@ def main():
             txt.texto_vlad_escolha(janela)
 
             if escolha == 0:
-                pygame.draw.rect(janela, cores('azul'), (85, 675, 150, 40), 5)
+                pygame.draw.rect(janela, aux.cores('azul'), (85, 675, 150, 40), 5)
                 txt.texto_vlad_ataque(janela)
 
             if escolha == 1:    
-                pygame.draw.rect(janela, cores('azul'), (85, 735, 310, 40), 5)
+                pygame.draw.rect(janela, aux.cores('azul'), (85, 735, 310, 40), 5)
                 txt.texto_vlad_defesa(janela)
 
 
         if turno == "vlad_ataque":
             xvlad, completo = hb.vlad_ataque(xvlad)
 
-            if 650 < xvlad < 660 and not som_tocou:
-                som_espada.play()
-                som_tocou = True
+            if 650 < xvlad < 660:
+                som_tocou = aux.tocar_uma_vez(som_espada, som_tocou)
 
             if completo:
                 hp_dragao -= 25 
@@ -296,9 +295,8 @@ def main():
         if turno == "vlad_defesa":
             tempo = hb.vlad_defesa(tempo)
 
-            if tempo < 100 and not som_tocou:
-                som_escudo.play() 
-                som_tocou = True
+            if tempo < 100: 
+                som_tocou = aux.tocar_uma_vez(som_escudo, som_tocou)
 
             turno = "vlad_mensagem"
 
@@ -321,19 +319,18 @@ def main():
             txt.texto_beatrice_escolha(janela)
 
             if escolha == 0:
-                pygame.draw.rect(janela, cores('roxo'), (85, 675, 130, 40), 5)
+                pygame.draw.rect(janela, aux.cores('roxo'), (85, 675, 130, 40), 5)
                 txt.texto_beatrice_ataque(janela)
 
             if escolha == 1:    
-                pygame.draw.rect(janela, cores('roxo'), (85, 735, 270, 40), 5)
+                pygame.draw.rect(janela, aux.cores('roxo'), (85, 735, 270, 40), 5)
                 txt.texto_beatrice_defesa(janela)
 
         if turno == "beatrice_ataque":
             tempo, nuvem, completo = hb.beatrice_ataque(tempo)
 
-            if tempo < 100 and not som_tocou:
-                som_raio.play()
-                som_tocou = True
+            if tempo < 100:
+                som_tocou = aux.tocar_uma_vez(som_raio, som_tocou)
 
             if completo:
                 hp_dragao -= 30
@@ -342,9 +339,8 @@ def main():
         if turno == "beatrice_defesa":             
             tempo, fada, completo = hb.beatrice_defesa(tempo)
 
-            if tempo < 100 and not som_tocou:
-                som_fada.play()
-                som_tocou = True
+            if tempo < 100:
+                som_tocou = aux.tocar_uma_vez(som_fada, som_tocou)
             
             if completo:
                 efeito_rugido = False
@@ -367,9 +363,7 @@ def main():
                 txt.texto_dragao_ataque(janela, ataque, fraqueza, redução)
 
             elif ataque == 5:
-                if not som_tocou:
-                    som_rugido.play()
-                    som_tocou = True
+                som_tocou = aux.tocar_uma_vez(som_rugido, som_tocou)
 
                 txt.texto_dragao_ataque(janela, ataque, fraqueza, redução)
 
@@ -381,9 +375,8 @@ def main():
             )
 
             if ataque == 1 or ataque == 2:
-                if x_fogo_pequeno == xvlad + 10 and not som_tocou:
-                    som_fogo.play()
-                    som_tocou = True
+                if x_fogo_pequeno == xvlad + 10:
+                    som_tocou = aux.tocar_uma_vez(som_fogo, som_tocou)
 
             if completo:
                 turno = "dragao_mensagem"
@@ -439,9 +432,7 @@ def main():
         if hp_dragao <= 0 and turno != "ganhou":
             turno = "dragao_morto"
             
-            if not roger_morreu:
-                roger_morte.play()
-                roger_morreu = True
+            roger_morreu = aux.tocar_uma_vez(roger_morte, roger_morreu)
 
             txt.escrever("ROGER, O DRAGÃO, MORREU!!!", (60, 630), janela, 'branco')
         
