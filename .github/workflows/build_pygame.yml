@@ -1,0 +1,25 @@
+name: Build Pygame APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o codigo
+        uses: actions/checkout@v4
+
+      - name: Compilar APK com Buildozer
+        uses: ArtemSydoryk/buildozer-action@v1
+        with:
+          command: buildozer -v android debug
+
+      - name: Enviar APK para Download
+        uses: actions/upload-artifact@v4
+        with:
+          name: jogo-2d1d-release
+          path: bin/*.apk

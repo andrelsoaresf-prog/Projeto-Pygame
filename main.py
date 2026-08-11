@@ -95,6 +95,19 @@ def main():
             if events.type == pygame.QUIT:
                 jogar = False
 
+            if events.type == pygame.MOUSEBUTTONDOWN:
+                if turno in ["menu", "historia", "inicio", "vlad_mensagem", "beatrice_mensagem", "dragao_mensagem", 
+                             "vlad_morto", "beatrice_morta", "herois_mortos", "dragao_morto", "perdeu"]:
+                    pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
+        
+            elif turno == "vlad_escolha" or turno == "beatrice_escolha":
+                pos = pygame.mouse.get_pos()
+                if pos[1] > 700:
+                    escolha = 1
+                else:
+                    escolha = 0
+                pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
+
             if events.type == pygame.KEYDOWN:
                 if turno == "menu" or turno == "ganhou":
                     if events.key == pygame.K_s:
