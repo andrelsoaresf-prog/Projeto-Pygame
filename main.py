@@ -41,17 +41,17 @@ def main():
     ganhou_img = pygame.image.load('imagens/ganhou.png')
     perdeu_img = pygame.image.load('imagens/perdeu.png')
 
-    som_rugido = pygame.mixer.Sound('audio/Rugido.mp3')
-    som_corte_aereo = pygame.mixer.Sound('audio/estalo.mp3')
-    som_raio = pygame.mixer.Sound('audio/choque.mp3')
-    som_fogo = pygame.mixer.Sound('audio/fogo.mp3')
-    som_espada = pygame.mixer.Sound('audio/fuum.mp3')
-    som_sapo = pygame.mixer.Sound('audio/sapo.mp3')
-    som_fada = pygame.mixer.Sound('audio/fada.mp3')
-    som_escudo = pygame.mixer.Sound('audio/escudo.mp3')
-    vlad_morte = pygame.mixer.Sound('audio/steve.mp3')
-    beatrice_morte = pygame.mixer.Sound('audio/morte_do_roblox.mp3')
-    roger_morte = pygame.mixer.Sound('audio/cachorro_chorando.mp3')
+    som_rugido = pygame.mixer.Sound('audio/Rugido.ogg')
+    som_corte_aereo = pygame.mixer.Sound('audio/estalo.ogg')
+    som_raio = pygame.mixer.Sound('audio/choque.ogg')
+    som_fogo = pygame.mixer.Sound('audio/fogo.ogg')
+    som_espada = pygame.mixer.Sound('audio/fuum.ogg')
+    som_sapo = pygame.mixer.Sound('audio/sapo.ogg')
+    som_fada = pygame.mixer.Sound('audio/fada.ogg')
+    som_escudo = pygame.mixer.Sound('audio/escudo.ogg')
+    vlad_morte = pygame.mixer.Sound('audio/steve.ogg')
+    beatrice_morte = pygame.mixer.Sound('audio/morte_do_roblox.ogg')
+    roger_morte = pygame.mixer.Sound('audio/cachorro_chorando.ogg')
     
     
     hp_dragao = 450
@@ -208,7 +208,7 @@ def main():
             turno_anterior = turno
 
         if not musica_parou and turno != "ganhou" and turno != "perdeu":
-            pygame.mixer.music.load('musicas/pixel-pursuit.mp3')
+            pygame.mixer.music.load('musicas/pixel-pursuit.ogg')
             pygame.mixer.music.play(-1)
             pygame.mixer.music.set_volume(0.5)
             musica_parou = True
@@ -455,7 +455,7 @@ def main():
 
             if musica_parou:
                 pygame.mixer.music.stop()
-                pygame.mixer.music.load('musicas/vitoria.mp3')
+                pygame.mixer.music.load('musicas/vitoria.ogg')
                 pygame.mixer.music.play(-1)
                 musica_parou = False
 
@@ -465,7 +465,7 @@ def main():
 
             if musica_parou:
                 pygame.mixer.music.stop()
-                pygame.mixer.music.load('musicas/triste.mp3')
+                pygame.mixer.music.load('musicas/triste.ogg')
                 pygame.mixer.music.play(-1)
                 musica_parou = False
 
