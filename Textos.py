@@ -3,7 +3,8 @@ from Funcao_auxiliar import cores
 
 pygame.font.init()
 
-FONTE_PADRAO = pygame.font.Font("fontes/pixelado.ttf", 20)
+with open("fontes/pixelado.ttf", "rb") as _arquivo_fonte:
+    FONTE_PADRAO = pygame.font.Font(_arquivo_fonte, 20)
 
 def escrever(texto, coordenada, janela, cor, fonte=FONTE_PADRAO):
     msg = fonte.render(texto, True, cores(cor))
