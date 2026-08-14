@@ -475,4 +475,34 @@ def main():
     pygame.quit()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        import traceback
+        erro_texto = traceback.format_exc()
+        print(erro_texto)  # também tenta mandar pro logcat, se der
+
+        pygame.init()
+        tela = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption("ERRO - 2D1D Dragao")
+        fonte = pygame.font.SysFont("monospace", 16)
+
+        linhas = erro_texto.splitlines()
+
+        rodando = True
+        while rodando:
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    rodando = False
+                if evento.type == pygame.FINGERDOWN:
+                    rodando = False
+
+            tela.fill((20, 20, 20))
+            y = 10
+            for linha in linhas:
+                render = fonte.render(linha, True, (255, 80, 80))
+                tela.blit(render, (10, y))
+                y += 18
+            pygame.display.update()
+
+        pygame.quit()
