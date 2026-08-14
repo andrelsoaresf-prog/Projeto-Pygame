@@ -40,6 +40,20 @@ except Exception:
     import sys
     sys.exit()
 
+def carregar_imagem(caminho):
+    with open(caminho, "rb") as f:
+        return pygame.image.load(f, caminho).convert_alpha()
+
+def carregar_som(caminho):
+    with open(caminho, "rb") as f:
+        return pygame.mixer.Sound(f)
+
+def carregar_musica(caminho):
+    # não usamos "with" aqui de propósito: a música toca em streaming
+    # e precisa que o arquivo continue aberto enquanto ela estiver tocando.
+    f = open(caminho, "rb")
+    pygame.mixer.music.load(f)
+
 def main():
     pygame.init()
     pygame.mixer.init()
@@ -47,45 +61,45 @@ def main():
     pygame.display.set_caption('2D1D, "2 DOIDOS E 1 DRAGÃO"')
 
     vlad_img = {
-        "normal" : pygame.image.load('imagens/vlad.png'),
-        "atacando": pygame.image.load('imagens/vlad_atacando.png'),
-        "morto": pygame.image.load('imagens/vlad_morto.png')
+        "normal" : carregar_imagem('imagens/vlad.png'),
+        "atacando": carregar_imagem('imagens/vlad_atacando.png'),
+        "morto": carregar_imagem('imagens/vlad_morto.png')
     }
     beatrice_img = {
-        "normal" : pygame.image.load('imagens/beatrice.png'),
-        "morta" : pygame.image.load('imagens/beatrice_morta.png')
+        "normal" : carregar_imagem('imagens/beatrice.png'),
+        "morta" : carregar_imagem('imagens/beatrice_morta.png')
     }
     dragao_img = {
-        "normal" : pygame.image.load('imagens/dragao.png'),
-        "morto" : pygame.image.load('imagens/dragao_morto.png')
+        "normal" : carregar_imagem('imagens/dragao.png'),
+        "morto" : carregar_imagem('imagens/dragao_morto.png')
     }
 
-    fogo_grande_img = pygame.image.load('imagens/fogo_grande.png')
-    fogo_pequeno_img = pygame.image.load('imagens/fogo_pequeno.png')
-    corte_dragao_img = pygame.image.load('imagens/corte_dragao.png')
-    fundo_img = pygame.image.load('imagens/fundo.png')
-    menu_img = pygame.image.load('imagens/menu.png')
-    nuvem_img = pygame.image.load('imagens/nuvem.png')
-    token_beatrice = pygame.image.load('imagens/beatrice_token.png')
-    token_vlad = pygame.image.load('imagens/vlad_token.png')
-    historia_img = pygame.image.load('imagens/historia.png')
-    escudo_img = pygame.image.load('imagens/escudo.png')
-    fada_img = pygame.image.load('imagens/fada.png')
-    livro_img = pygame.image.load('imagens/livro.png')
-    ganhou_img = pygame.image.load('imagens/ganhou.png')
-    perdeu_img = pygame.image.load('imagens/perdeu.png')
+    fogo_grande_img = carregar_imagem('imagens/fogo_grande.png')
+    fogo_pequeno_img = carregar_imagem('imagens/fogo_pequeno.png')
+    corte_dragao_img = carregar_imagem('imagens/corte_dragao.png')
+    fundo_img = carregar_imagem('imagens/fundo.png')
+    menu_img = carregar_imagem('imagens/menu.png')
+    nuvem_img = carregar_imagem('imagens/nuvem.png')
+    token_beatrice = carregar_imagem('imagens/beatrice_token.png')
+    token_vlad = carregar_imagem('imagens/vlad_token.png')
+    historia_img = carregar_imagem('imagens/historia.png')
+    escudo_img = carregar_imagem('imagens/escudo.png')
+    fada_img = carregar_imagem('imagens/fada.png')
+    livro_img = carregar_imagem('imagens/livro.png')
+    ganhou_img = carregar_imagem('imagens/ganhou.png')
+    perdeu_img = carregar_imagem('imagens/perdeu.png')
 
-    som_rugido = pygame.mixer.Sound('audio/Rugido.ogg')
-    som_corte_aereo = pygame.mixer.Sound('audio/estalo.ogg')
-    som_raio = pygame.mixer.Sound('audio/choque.ogg')
-    som_fogo = pygame.mixer.Sound('audio/fogo.ogg')
-    som_espada = pygame.mixer.Sound('audio/fuum.ogg')
-    som_sapo = pygame.mixer.Sound('audio/sapo.ogg')
-    som_fada = pygame.mixer.Sound('audio/fada.ogg')
-    som_escudo = pygame.mixer.Sound('audio/escudo.ogg')
-    vlad_morte = pygame.mixer.Sound('audio/steve.ogg')
-    beatrice_morte = pygame.mixer.Sound('audio/morte_do_roblox.ogg')
-    roger_morte = pygame.mixer.Sound('audio/cachorro_chorando.ogg')
+    som_rugido = carregar_som('audio/Rugido.ogg')
+    som_corte_aereo = carregar_som('audio/estalo.ogg')
+    som_raio = carregar_som('audio/choque.ogg')
+    som_fogo = carregar_som('audio/fogo.ogg')
+    som_espada = carregar_som('audio/fuum.ogg')
+    som_sapo = carregar_som('audio/sapo.ogg')
+    som_fada = carregar_som('audio/fada.ogg')
+    som_escudo = carregar_som('audio/escudo.ogg')
+    vlad_morte = carregar_som('audio/steve.ogg')
+    beatrice_morte = carregar_som('audio/morte_do_roblox.ogg')
+    roger_morte = carregar_som('audio/cachorro_chorando.ogg')
     
     
     hp_dragao = 450
@@ -242,7 +256,7 @@ def main():
             turno_anterior = turno
 
         if not musica_parou and turno != "ganhou" and turno != "perdeu":
-            pygame.mixer.music.load('musicas/pixel-pursuit.ogg')
+            carregar_musica('musicas/pixel-pursuit.ogg')
             pygame.mixer.music.play(-1)
             pygame.mixer.music.set_volume(0.5)
             musica_parou = True
@@ -489,7 +503,7 @@ def main():
 
             if musica_parou:
                 pygame.mixer.music.stop()
-                pygame.mixer.music.load('musicas/vitoria.ogg')
+                carregar_musica('musicas/vitoria.ogg')
                 pygame.mixer.music.play(-1)
                 musica_parou = False
 
@@ -499,7 +513,7 @@ def main():
 
             if musica_parou:
                 pygame.mixer.music.stop()
-                pygame.mixer.music.load('musicas/triste.ogg')
+                carregar_musica('musicas/triste.ogg')
                 pygame.mixer.music.play(-1)
                 musica_parou = False
 
