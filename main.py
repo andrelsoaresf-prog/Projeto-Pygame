@@ -1,10 +1,44 @@
 import pygame
 
-import Funcao_auxiliar as aux
-import Habilidades as hb
-import Barra_de_vida as pv
-import Textos as txt
-from Dragao_ataques import ataques_dragao
+def mostrar_erro(erro_texto):
+    print(erro_texto)  # também tenta mandar pro logcat, se der
+    pygame.init()
+    tela = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption("ERRO - 2D1D Dragao")
+    fonte = pygame.font.Font(None, 20)
+
+    linhas = erro_texto.splitlines()
+
+    rodando = True
+    while rodando:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                rodando = False
+            if evento.type == pygame.FINGERDOWN:
+                rodando = False
+
+        tela.fill((20, 20, 20))
+        y = 10
+        for linha in linhas:
+            render = fonte.render(linha, True, (255, 80, 80))
+            tela.blit(render, (10, y))
+            y += 18
+        pygame.display.update()
+
+    pygame.quit()
+
+
+try:
+    import Funcao_auxiliar as aux
+    import Habilidades as hb
+    import Barra_de_vida as pv
+    import Textos as txt
+    from Dragao_ataques import ataques_dragao
+except Exception:
+    import traceback
+    mostrar_erro(traceback.format_exc())
+    import sys
+    sys.exit()
 
 def main():
     pygame.init()
@@ -479,30 +513,4 @@ if __name__ == "__main__":
         main()
     except Exception:
         import traceback
-        erro_texto = traceback.format_exc()
-        print(erro_texto)  # também tenta mandar pro logcat, se der
-
-        pygame.init()
-        tela = pygame.display.set_mode((800, 600))
-        pygame.display.set_caption("ERRO - 2D1D Dragao")
-        fonte = pygame.font.SysFont("monospace", 16)
-
-        linhas = erro_texto.splitlines()
-
-        rodando = True
-        while rodando:
-            for evento in pygame.event.get():
-                if evento.type == pygame.QUIT:
-                    rodando = False
-                if evento.type == pygame.FINGERDOWN:
-                    rodando = False
-
-            tela.fill((20, 20, 20))
-            y = 10
-            for linha in linhas:
-                render = fonte.render(linha, True, (255, 80, 80))
-                tela.blit(render, (10, y))
-                y += 18
-            pygame.display.update()
-
-        pygame.quit()
+        mostrar_erro(traceback.format_exc())
