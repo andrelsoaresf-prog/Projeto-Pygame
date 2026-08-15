@@ -57,7 +57,7 @@ def carregar_musica(caminho):
 def main():
     pygame.init()
     pygame.mixer.init()
-    janela = pygame.display.set_mode((1300, 900))
+    janela = pygame.display.set_mode((1300, 900), pygame.SCALED)
     pygame.display.set_caption('2D1D, "2 DOIDOS E 1 DRAGÃO"')
 
     vlad_img = {
@@ -137,6 +137,7 @@ def main():
 
     clock = pygame.time.Clock()
     jogar = True
+    ultimo_clique = 0  # controle pra evitar clique duplicado (comum em telas touch)
 
     while jogar:
         for events in pygame.event.get():
@@ -144,17 +145,22 @@ def main():
                 jogar = False
 
             if events.type == pygame.MOUSEBUTTONDOWN:
+                agora = pygame.time.get_ticks()
+                if agora - ultimo_clique < 300:
+                    continue  # ignora clique repetido chegando rápido demais (double click do touch)
+                ultimo_clique = agora
+
                 if turno in ["menu", "historia", "inicio", "vlad_mensagem", "beatrice_mensagem", "dragao_mensagem", 
                              "vlad_morto", "beatrice_morta", "herois_mortos", "dragao_morto", "perdeu"]:
                     pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
-        
-            elif turno == "vlad_escolha" or turno == "beatrice_escolha":
-                pos = pygame.mouse.get_pos()
-                if pos[1] > 700:
-                    escolha = 1
-                else:
-                    escolha = 0
-                pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
+
+                elif turno == "vlad_escolha" or turno == "beatrice_escolha":
+                    pos = pygame.mouse.get_pos()
+                    if pos[1] > 700:
+                        escolha = 1
+                    else:
+                        escolha = 0
+                    pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
 
             if events.type == pygame.KEYDOWN:
                 if turno == "menu" or turno == "ganhou":
