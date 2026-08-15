@@ -40,9 +40,13 @@ except Exception:
     import sys
     sys.exit()
 
-def carregar_imagem(caminho):
+def carregar_imagem(caminho, tem_transparencia=True):
     with open(caminho, "rb") as f:
-        return pygame.image.load(f, caminho).convert_alpha()
+        img = pygame.image.load(f, caminho)
+    if tem_transparencia:
+        return img.convert_alpha()  # mais lento, mas necessário pra recortes/sprites
+    else:
+        return img.convert()  # bem mais rápido, pra fundos de tela cheia sem transparência
 
 def carregar_som(caminho):
     with open(caminho, "rb") as f:
@@ -77,17 +81,17 @@ def main():
     fogo_grande_img = carregar_imagem('imagens/fogo_grande.png')
     fogo_pequeno_img = carregar_imagem('imagens/fogo_pequeno.png')
     corte_dragao_img = carregar_imagem('imagens/corte_dragao.png')
-    fundo_img = carregar_imagem('imagens/fundo.png')
-    menu_img = carregar_imagem('imagens/menu.png')
+    fundo_img = carregar_imagem('imagens/fundo.png', tem_transparencia=False)
+    menu_img = carregar_imagem('imagens/menu.png', tem_transparencia=False)
     nuvem_img = carregar_imagem('imagens/nuvem.png')
     token_beatrice = carregar_imagem('imagens/beatrice_token.png')
     token_vlad = carregar_imagem('imagens/vlad_token.png')
-    historia_img = carregar_imagem('imagens/historia.png')
+    historia_img = carregar_imagem('imagens/historia.png', tem_transparencia=False)
     escudo_img = carregar_imagem('imagens/escudo.png')
     fada_img = carregar_imagem('imagens/fada.png')
     livro_img = carregar_imagem('imagens/livro.png')
-    ganhou_img = carregar_imagem('imagens/ganhou.png')
-    perdeu_img = carregar_imagem('imagens/perdeu.png')
+    ganhou_img = carregar_imagem('imagens/ganhou.png', tem_transparencia=False)
+    perdeu_img = carregar_imagem('imagens/perdeu.png', tem_transparencia=False)
 
     som_rugido = carregar_som('audio/Rugido.ogg')
     som_corte_aereo = carregar_som('audio/estalo.ogg')
@@ -156,11 +160,13 @@ def main():
 
                 elif turno == "vlad_escolha" or turno == "beatrice_escolha":
                     pos = pygame.mouse.get_pos()
-                    if pos[1] > 700:
-                        escolha = 1
+                    nova_escolha = 1 if pos[1] > 700 else 0
+                    if nova_escolha == escolha:
+                        # tocou de novo na mesma opção -> confirma
+                        pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
                     else:
-                        escolha = 0
-                    pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
+                        # primeiro toque só seleciona, pra dar tempo de ler a descrição
+                        escolha = nova_escolha
 
             if events.type == pygame.KEYDOWN:
                 if turno == "menu" or turno == "ganhou":
@@ -178,7 +184,7 @@ def main():
                 elif turno == "inicio":
                     if events.key == pygame.K_RETURN:
                         turno = "vlad_escolha"
-                        escolha = 0
+                        escolha = -1
 
                 elif turno == "vlad_escolha":
                     if events.key == pygame.K_UP:
@@ -195,7 +201,7 @@ def main():
 
                 elif turno == "vlad_mensagem":
                     if events.key == pygame.K_RETURN:
-                        escolha = 0
+                        escolha = -1
                         if hp_beatrice > 0:
                             turno = "beatrice_escolha"
                         else:
@@ -227,12 +233,14 @@ def main():
                             turno = "herois_mortos"
                         elif hp_vlad > 0:
                             turno = "vlad_escolha"
+                            escolha = -1
                         else:
                             turno = "vlad_morto"
 
                 elif turno == "vlad_morto":
                     if events.key == pygame.K_RETURN:
                         turno = "beatrice_escolha"
+                        escolha = -1
 
                 elif turno == "beatrice_morta":
                     if events.key == pygame.K_RETURN:
@@ -524,7 +532,7 @@ def main():
                 musica_parou = False
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(90)
 
     pygame.quit()
 
