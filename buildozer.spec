@@ -4,7 +4,7 @@ package.name = doidosdragao
 package.domain = org.game
 
 source.dir = .
-source.include_exts = py,png,jpg,mp3,ttf
+source.include_exts = py,png,jpg,ogg,ttf
 
 version = 1.0
 requirements = python3==3.10.14,hostpython3==3.10.14,pygame
