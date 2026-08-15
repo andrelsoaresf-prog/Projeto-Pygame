@@ -1,7 +1,7 @@
 import pygame
 
 def mostrar_erro(erro_texto):
-    print(erro_texto)  # também tenta mandar pro logcat, se der
+    print(erro_texto)  
     pygame.init()
     tela = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("ERRO - 2D1D Dragao")
@@ -44,17 +44,15 @@ def carregar_imagem(caminho, tem_transparencia=True):
     with open(caminho, "rb") as f:
         img = pygame.image.load(f, caminho)
     if tem_transparencia:
-        return img.convert_alpha()  # mais lento, mas necessário pra recortes/sprites
+        return img.convert_alpha()  
     else:
-        return img.convert()  # bem mais rápido, pra fundos de tela cheia sem transparência
+        return img.convert()  
 
 def carregar_som(caminho):
     with open(caminho, "rb") as f:
         return pygame.mixer.Sound(f)
 
 def carregar_musica(caminho):
-    # não usamos "with" aqui de propósito: a música toca em streaming
-    # e precisa que o arquivo continue aberto enquanto ela estiver tocando.
     f = open(caminho, "rb")
     pygame.mixer.music.load(f)
 
@@ -141,7 +139,7 @@ def main():
 
     clock = pygame.time.Clock()
     jogar = True
-    ultimo_clique = 0  # controle pra evitar clique duplicado (comum em telas touch)
+    ultimo_clique = 0  
 
     while jogar:
         for events in pygame.event.get():
@@ -151,7 +149,7 @@ def main():
             if events.type == pygame.MOUSEBUTTONDOWN:
                 agora = pygame.time.get_ticks()
                 if agora - ultimo_clique < 300:
-                    continue  # ignora clique repetido chegando rápido demais (double click do touch)
+                    continue  
                 ultimo_clique = agora
 
                 if turno in ["menu", "historia", "inicio", "vlad_mensagem", "beatrice_mensagem", "dragao_mensagem", 
@@ -162,10 +160,8 @@ def main():
                     pos = pygame.mouse.get_pos()
                     nova_escolha = 1 if pos[1] > 700 else 0
                     if nova_escolha == escolha:
-                        # tocou de novo na mesma opção -> confirma
                         pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
                     else:
-                        # primeiro toque só seleciona, pra dar tempo de ler a descrição
                         escolha = nova_escolha
 
             if events.type == pygame.KEYDOWN:

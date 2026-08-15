@@ -1,5 +1,5 @@
 [app]
-title = 2D1D Dragao
+title = 2D1D
 package.name = doidosdragao
 package.domain = org.game
 
