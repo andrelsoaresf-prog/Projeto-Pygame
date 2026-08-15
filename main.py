@@ -414,7 +414,7 @@ def main():
         if turno == "beatrice_defesa":             
             tempo, fada, completo = hb.beatrice_defesa(tempo)
 
-            if tempo < 100:
+            if tempo < 90:
                 som_tocou = aux.tocar_uma_vez(som_fada, som_tocou)
             
             if completo:
@@ -532,7 +532,7 @@ def main():
                 musica_parou = False
 
         pygame.display.update()
-        clock.tick(90)
+        clock.tick(95)
 
     pygame.quit()
 

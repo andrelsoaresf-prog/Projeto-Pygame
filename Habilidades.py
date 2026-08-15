@@ -25,7 +25,7 @@ def beatrice_ataque(tempo):
 
 def beatrice_defesa(tempo):
     tempo += 1
-    if tempo <= 100:
+    if tempo <= 90:
         return tempo, True, False
     else:
         return 0, False, True
